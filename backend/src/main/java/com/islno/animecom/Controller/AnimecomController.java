@@ -25,7 +25,6 @@ public class AnimecomController {
 
     @GetMapping("/")
     public String home(@RequestParam(defaultValue = "0") int page, Model model) {
-        // Chama o service pedindo a página X
         Page<AnimeModel> dadosDaPagina = animeService.listarPaginado(page);
 
         model.addAttribute("listaDeAnimes", dadosDaPagina);
@@ -35,22 +34,26 @@ public class AnimecomController {
         return "home";
     }
 
-    // ROTA "INVISÍVEL" (O Javascript do Popup chama essa aqui)
+
     @GetMapping("/api/popup")
-    @ResponseBody // <--- Importante: Retorna DADOS (JSON), não HTML
+    @ResponseBody
     public List<AnimeModel> dadosDoPopup(@RequestParam String termo) {
-        if (termo.length() < 2) return List.of(); // Só busca se tiver 2 letras
+        if (termo.length() < 2) return List.of();
         return animeService.buscarParaPopup(termo);
     }
 
-    // ROTA DE DETALHES (Para onde você vai ao clicar)
-    @GetMapping("/anime/{id}")
-    public String detalhes(@PathVariable Long id, Model model) {
-        AnimeModel anime = animeService.buscarPorId(id);
-        if (anime != null) {
-            model.addAttribute("anime", anime);
-            return "detalhes";
-        }
-        return "redirect:/";
+    @GetMapping("/buscar")
+    public String paginaDeBusca(@RequestParam("titulo") String termo,
+                                @RequestParam(defaultValue = "0") int page,
+                                Model model) {
+
+        Page<AnimeModel> resultados = animeService.filtrarAnimes(termo, page);
+
+        model.addAttribute("listaDeAnimes", resultados);
+        model.addAttribute("termoBuscado", termo);
+        model.addAttribute("paginaAtual", page);
+        model.addAttribute("totalPaginas", resultados.getTotalPages());
+
+        return "busca";
     }
 }

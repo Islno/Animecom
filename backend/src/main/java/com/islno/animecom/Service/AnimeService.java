@@ -24,9 +24,11 @@ public class AnimeService {
     public List<AnimeModel> buscarParaPopup(String digitado) {
         PageRequest regra = PageRequest.of(0, 5, Sort.by("titulo").ascending());
 
-        return animecomRepository.findByTituloContainingIgnoreCase(digitado, regra).getContent();
+        return animecomRepository.buscarComPrioridade(digitado, regra).getContent();
     }
-    public AnimeModel buscarPorId(Long id) {
-        return animecomRepository.findById(id).orElse(null);
+    public Page<AnimeModel> filtrarAnimes(String termo, int pagina) {
+        PageRequest regra = PageRequest.of(pagina, 20);
+
+        return animecomRepository.buscaCompleta(termo, regra);
     }
 }
