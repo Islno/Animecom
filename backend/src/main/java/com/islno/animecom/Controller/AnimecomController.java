@@ -31,6 +31,7 @@ public class AnimecomController {
         model.addAttribute("paginaAtual", page);
         model.addAttribute("totalPaginas", dadosDaPagina.getTotalPages());
 
+        model.addAttribute("listaPopulares", animeService.buscarTop10());
         return "home";
     }
 
@@ -56,4 +57,27 @@ public class AnimecomController {
 
         return "busca";
     }
+    @GetMapping("/anime/{identificador}")
+    public String paginaDetalhes(@PathVariable("identificador") String url, Model model) {
+
+        try {
+
+            String idString = url.split("-")[0];
+
+            Long id = Long.parseLong(idString);
+
+            AnimeModel anime = animeService.buscarPorId(id);
+
+            if (anime != null) {
+                model.addAttribute("anime", anime);
+                return "detalhes";
+            }
+        } catch (NumberFormatException e) {
+
+            return "redirect:/";
+        }
+
+        return "redirect:/";
+    }
+
 }

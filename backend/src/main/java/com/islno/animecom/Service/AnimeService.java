@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,9 +28,18 @@ public class AnimeService {
 
         return animecomRepository.buscarComPrioridade(digitado, regra).getContent();
     }
+
     public Page<AnimeModel> filtrarAnimes(String termo, int pagina) {
         PageRequest regra = PageRequest.of(pagina, 20);
 
         return animecomRepository.buscaCompleta(termo, regra);
+    }
+
+    public AnimeModel buscarPorId(Long id) {
+        return animecomRepository.findById(id).orElse(null);
+    }
+
+    public List<AnimeModel> buscarTop10() {
+        return animecomRepository.buscarPopulares(PageRequest.of(0, 10)).getContent();
     }
 }
