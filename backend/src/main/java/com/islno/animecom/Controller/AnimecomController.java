@@ -23,6 +23,11 @@ public class AnimecomController {
         this.animeService = animeService;
     }
 
+    @GetMapping("/login")
+    public String telaLogin() {
+        return "login"; // Vai buscar o arquivo login.html (que faremos a seguir)
+    }
+
     @GetMapping("/")
     public String home(@RequestParam(defaultValue = "0") int page, Model model) {
         Page<AnimeModel> dadosDaPagina = animeService.listarPaginado(page);

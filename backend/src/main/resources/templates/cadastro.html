@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>AnimeCom - Cadastro</title>
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg-color: #0f172a; --card-bg: #1e293b; --text-color: #f1f5f9; --accent-color: #6366f1; --accent-hover: #4f46e5; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-color); color: var(--text-color); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; flex-direction: column; }
+
+        .logo-header { margin-bottom: 20px; }
+        .logo-img { height: 100px; width: auto; filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.5)); transition: transform 0.3s; }
+        .logo-img:hover { transform: scale(1.05); }
+
+        .login-container { background: var(--card-bg); padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); width: 100%; max-width: 350px; text-align: center; }
+        h2 { margin-top: 0; color: var(--accent-color); font-size: 1.8rem; margin-bottom: 20px; }
+
+        input { width: 100%; box-sizing: border-box; padding: 12px; margin-bottom: 15px; border-radius: 8px; border: 1px solid #334155; background: var(--bg-color); color: white; font-family: 'Poppins'; outline: none; }
+        input:focus { border-color: var(--accent-color); }
+
+        .password-container { position: relative; width: 100%; }
+        .toggle-password { position: absolute; right: 15px; top: 12px; cursor: pointer; color: #94a3b8; user-select: none; }
+        .toggle-password:hover { color: white; }
+
+        button { width: 100%; background: var(--accent-color); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; font-family: 'Poppins'; font-size: 16px; margin-top: 5px; }
+        button:hover { background: var(--accent-hover); transform: translateY(-2px); }
+        .links { margin-top: 20px; font-size: 14px; }
+        .links a { color: #94a3b8; text-decoration: none; transition: 0.2s; }
+        .links a:hover { color: white; }
+    </style>
+</head>
+<body>
+
+<div class="logo-header">
+    <a href="/">
+        <img th:src="@{/images/logo.png}" alt="Logo AnimeCom" class="logo-img" onerror="this.style.display='none'">
+    </a>
+</div>
+
+<div class="login-container">
+    <h2>Criar Nova Conta</h2>
+
+    <form th:action="@{/cadastro}" method="POST">
+        <input type="text" name="nome" placeholder="Seu Nome de Usuário" required autofocus>
+        <input type="email" name="email" placeholder="Seu E-mail" required>
+
+        <div class="password-container">
+            <input type="password" name="senha" id="senhaCadastro" placeholder="Crie sua Senha" required minlength="4">
+            <span class="toggle-password" onclick="togglePassword('senhaCadastro', this)">👁️</span>
+        </div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <div class="links">
+        <p>Já tens uma conta? <a href="/login">Entrar</a></p>
+        <p><a href="/">⬅ Voltar para a Home</a></p>
+    </div>
+</div>
+
+<script>
+    function togglePassword(inputId, iconElement) {
+        const input = document.getElementById(inputId);
+        if (input.type === "password") {
+            input.type = "text";
+            iconElement.innerText = "🙈";
+        } else {
+            input.type = "password";
+            iconElement.innerText = "👁️";
+        }
+    }
+</script>
+</body>
+</html>
